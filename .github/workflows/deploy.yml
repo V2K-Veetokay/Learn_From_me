@@ -1,0 +1,56 @@
+name: Build and deploy Hugo site to deploy branch for GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.153.3"
+          extended: true
+
+      - name: Build site
+        run: hugo --minify
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy to deploy branch
+        env:
+          DEPLOY_BRANCH: deploy
+        run: |
+          # Prepare deploy branch (create orphan if missing)
+          if git show-ref --verify --quiet refs/heads/${DEPLOY_BRANCH}; then
+            git checkout ${DEPLOY_BRANCH}
+            git rm -rf .
+          else
+            git checkout --orphan ${DEPLOY_BRANCH}
+            git rm -rf .
+          fi
+
+          # Copy generated site to repo root
+          cp -a public/. .
+
+          # Ensure GitHub Pages won't use Jekyll
+          touch .nojekyll
+
+          # Commit and force-push the deploy branch
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to deploy"
+          else
+            git commit -m "Deploy site: ${GITHUB_SHA}"
+            git push --force origin ${DEPLOY_BRANCH}
+          fi
