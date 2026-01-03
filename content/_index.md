@@ -1,5 +1,5 @@
 ---
-title: "Learn From me"
+title: "Learn With Me"
 layout: landing
 ---
 
