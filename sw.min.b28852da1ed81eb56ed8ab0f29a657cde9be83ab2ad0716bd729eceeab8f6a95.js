@@ -1,1 +1,0 @@
-navigator.serviceWorker&&navigator.serviceWorker.register("/Learn_From_me/sw.js",{scope:"/Learn_From_me/"})
