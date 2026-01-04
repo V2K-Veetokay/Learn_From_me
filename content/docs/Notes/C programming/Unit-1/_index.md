@@ -12,9 +12,9 @@ weight: 1
   4. [Concept and role of structured programming](Basics-of-Programming/114.-Concept-and-role-of=structured-programming)
 
 ## Basics of C
-  1. History of C
-  2. Salient features of C
-  3. Structure of C program
+  1. [History of C](Basics-of-C/121.-History-of-C)
+  2. [Salient features of C](Basics-of-C/122.-Salient-features-of-C)
+  3. [Structure of C program](Basics-of-C/123.-Structure-of-C-program)
   4. Compiling C program
   5. Link and Run C program
   6. Character set
